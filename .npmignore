@@ -1,0 +1,6 @@
+test
+contributing.md
+.editorconfig
+coverage
+.nyc_output
+.travis.yml
