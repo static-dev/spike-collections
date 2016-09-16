@@ -23,18 +23,22 @@ Add to your spike project as such:
 
 ```js
 const locals = {}
+const collections = new Collections({
+  addDataTo: locals,
+  posts: 'posts/**',
+  drafts: 'drafts/**'
+})
 
 module.exports = {
   // your config here...
-  plugins: [
-    new SpikeCollections({
-      addDataTo: locals,
-      posts: 'posts/**',
-      drafts: 'drafts/**'
-    })
-  ]
+  reshape: (ctx) => {
+    return htmlStandards({ webpack: ctx, locals: collections.locals(ctx, locals) })
+  },
+  plugins: [collections]
 }
 ```
+
+Note that this plugin interacts with your locals in two separate places. First, it takes the entire object in the `addDataTo` param, through which it adds all your posts to be accessible to any page in your app. Second, it uses the `collections.locals` function inside the reshape configuration in order to be able to add local variables which vary per-post, like those in the frontmatter, the date, etc.
 
 See [options](#options) for more detail on further configuring spike-collections.
 
