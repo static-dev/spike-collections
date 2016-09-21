@@ -24,9 +24,7 @@ Add to your spike project as such:
 ```js
 const locals = {}
 const collections = new Collections({
-  addDataTo: locals,
-  posts: 'posts/**',
-  drafts: 'drafts/**'
+  addDataTo: locals
 })
 
 module.exports = {
@@ -38,13 +36,24 @@ module.exports = {
 }
 ```
 
+This default configuration will look for a folder called `posts` and compile all the content into that folder in the same way that jekyll does. You can also customize your collections. For example, the default config really resolves to this:
+
+```js
+const collections = new Collections({
+  addDataTo: locals,
+  collections: { posts: 'posts/**' }
+})
+```
+
+So you can rename your collection, put it in a different folder, add multiple other collections, etc. Just add the name of the collection as the key, and a globstar string as the value.
+
 Note that this plugin interacts with your locals in two separate places. First, it takes the entire object in the `addDataTo` param, through which it adds all your posts to be accessible to any page in your app. Second, it uses the `collections.locals` function inside the reshape configuration in order to be able to add local variables which vary per-post, like those in the frontmatter, the date, etc.
 
 See [options](#options) for more detail on further configuring spike-collections.
 
 ### Usage
 
-To get started, just make a `posts` folder (or another name, but adjust the `posts` option), and put a file in there with the following formatting: `YEAR-MONTH-DAY-title.MARKUP`. So for example:
+To get started, just make a `posts` folder (or another name, but adjust the `collections` option), and put a file in there with the following formatting: `YEAR-MONTH-DAY-title.MARKUP`. So for example:
 
 ```
 .
@@ -74,13 +83,24 @@ In this example, we assume that a layout has been configured for the post. Posts
 doctype html
 html
   head
-    title {{ post.title }}
+    title {{ title }}
   body
-    h1 {{ post.title }}
-    h3.author by {{ post.author }}
-    h3.date on {{ post.date }}
+    h1 {{ title }}
+    h3.author by {{ author }}
+    h3.date on {{ date }}
     .content(md)
       block(name='content')
+```
+
+All of your views will have get a `content` variable as well, which holds information on all of your collections. Each collection will be scoped as the name you gave it under `content`. So `{{ content.posts }}` would return the default posts folder. You can use this for building an index page as such:
+
+```jade
+extends(src='layout.sgr')
+block(name='content')
+  h1 My Cool Blog
+  ul
+    each(loop='post of content.posts')
+      li: a(href='{{ post._path }}') {{ post.title }}
 ```
 
 With this in place, you've got a basic blog structure going!
@@ -144,6 +164,22 @@ Also note that you can pass a `perPage` option to the `pagination` object to def
 | **permalinks** | a function that accepts the relative path to a given file and returns an object to be added to the front matter. | `YEAR-MONTH-DAY-title` |
 | **paginate** | object with `per_page` (an integer representing the number of posts per page), `template` (relative path to a template to render additional pages into), and `output` (a function that takes a page number and must output a relative destination path for the page) keys. If any single key is given, others default as such: | `{ per_page: 10, output: (n) => 'posts/pages/${n}.html' }` |
 
+### What About Drafts?
+
+Drafts are just a folder of content that is ignored and not compiled. It's easy in spike to replicate this functionality using the `ignores` configuration. To create a drafts folder, you can do something like this:
+
+```js
+module.exports = {
+  // ...other config..
+  ignores: ['drafts/**']
+}
+```
+
+This will ensure that none of your draft posts are published. To have your drafts compiled, simply remove it from the array, and add the same pattern as a collection.
+
+### A Note on Speed
+
+This is not a fast plugin. It does a lot of reading, writing, and transforming of files. If you are planning on running a large blog with hundreds or thousands of posts, you will probably see the compile time start to suffer. If this is this case, we'd recommend getting your data out of flat files and into a database. Whenever you are dealing with a large volume of data, a database is usually a better bet anyway. Build a light API, hook it up to your database, and pull it in to spike using [spike-records](https://github.com/static-dev/spike-records) instead!
 
 ### License & Contributing
 
