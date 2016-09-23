@@ -109,22 +109,19 @@ With this in place, you've got a basic blog structure going!
 
 #### Permalinks
 
-By default, the expected date format for posts is `YEAR-MONTH-DAY-title.MARKUP`. However, if you'd like to change this, you can do so using the `permalinks` option. This option expects a function which takes a single parameter, which is the relative path to each post, as a string. It's expected to return an object which will be merged into the locals for that single post.
+Jekyll and some other blog systems require that you start posts with a date, which it then extracts and makes available through your post's locals. If you'd like to add functionality like this, it's simple to do with the `permalinks` option. It accepts a function which takes the post's filename as an input, and can export an object which is merged with that post's locals.
 
-So, for example, the default permalink function looks something like this:
+So, for example, a permalink function to emulate jekyll's date-first format might look something like this:
 
 ```js
 function permalink (path) {
-  const matches = path.match(/(.*)-(.*)-(.*)-(.*)/)
-  const year = matches[1]
-  const month = matches[2]
-  const day = matches[3]
+  const matches = path.match(/^(\d+-\d+-\d+-)/)
 
-  if (!matches || !year || !month || !day) {
+  if (!matches || !matches[1]) {
     throw new Error(`incorrect date formatting for post: ${path}`)
   }
 
-  return { date: `${year}-${month}-${day}`}
+  return { date: matches[1] }
 }
 ```
 
@@ -156,6 +153,26 @@ Each individual post gets a `_page` variable added to their rendered front matte
 
 Also note that you can pass a `perPage` option to the `pagination` object to define the number of posts you want to be rendered to each page.
 
+Here's an example of how a collection with pagination enabled might look in your configuration:
+
+```js
+new Collections({
+  addDataTo: locals,
+  collections: {
+    posts: {
+      files: 'posts/**',
+      paginate: {
+        template: 'posts/_template.sgr',
+        perPage: 5,
+        output: (i) => `posts/page${i}.html`
+      }
+    }
+  }
+})
+```
+
+More information on pagination options can be found below.
+
 ### Options
 
 | Name | Description | Default |
@@ -163,11 +180,11 @@ Also note that you can pass a `perPage` option to the `pagination` object to def
 | **addDataTo** | An object that will have collections' data appended to it | |
 | **collections** | An object with the keys being the name of your collection, and values as listed below | `{ posts: { files: posts/** } }` |
 | **collections.[name].files** |  A [globstar](http://globtester.com) string relative to the project root matching any files to be processed as posts | |
-| **collections.[name].permalinks** | A function that accepts the relative path to a given file and returns an object to be added to the front matter. | `YEAR-MONTH-DAY-title` | |
+| **collections.[name].permalinks** | A function that accepts the relative path to a given file and returns an object to be added to the front matter. | |
 | **collections.[name].paginate** | Object with keys as described below | |
 | **collections.[name].paginate.perPage** | Integer representing the number of posts per page. | `10` |
 | **collections.[name].paginate.template** | _(required if paginate is provided)_ Path (relative to the project root) to a template to render additional pages into. | |
-| **collections.[name].paginate.output** | a function that takes a page number and must output a relative destination path for the page | `(x) => [name]/p${x}.html` |
+| **collections.[name].paginate.output** | _(required if paginate is provided)_ A function that takes a page number and must output a relative destination path for the page | |
 
 ### What About Drafts?
 
