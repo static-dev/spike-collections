@@ -162,12 +162,12 @@ Also note that you can pass a `perPage` option to the `pagination` object to def
 | ---- | ----------- | ------- |
 | **addDataTo** | An object that will have collections' data appended to it | |
 | **collections** | An object with the keys being the name of your collection, and values as listed below | `{ posts: { files: `posts/** } }` |
-| **collections.[NAME].files** |  A [globstar](http://globtester.com) string relative to the project root matching any files to be processed as posts | |
-| **collections.[NAME].permalinks** | A function that accepts the relative path to a given file and returns an object to be added to the front matter. | `YEAR-MONTH-DAY-title` | |
-| **collections.[NAME].paginate** | Object with keys as described below | |
-| **collections.[NAME].paginate.perPage** | Integer representing the number of posts per page. | `10` |
-| **collections.[NAME].paginate.template | _(required if paginate is provided)_ Path (relative to the project root) to a template to render additional pages into. | |
-| **collections.[NAME].paginate.output | a function that takes a page number and must output a relative destination path for the page | `(x) => `[NAME]/p${x}.html` |
+| **collections.[name].files** |  A [globstar](http://globtester.com) string relative to the project root matching any files to be processed as posts | |
+| **collections.[name].permalinks** | A function that accepts the relative path to a given file and returns an object to be added to the front matter. | `YEAR-MONTH-DAY-title` | |
+| **collections.[name].paginate** | Object with keys as described below | |
+| **collections.[name].paginate.perPage** | Integer representing the number of posts per page. | `10` |
+| **collections.[name].paginate.template** | _(required if paginate is provided)_ Path (relative to the project root) to a template to render additional pages into. | |
+| **collections.[name].paginate.output** | a function that takes a page number and must output a relative destination path for the page | `(x) => `[NAME]/p${x}.html` |
 
 ### What About Drafts?
 
