@@ -55,13 +55,13 @@ See [options](#options) for more detail on further configuring spike-collections
 
 ### Usage
 
-To get started, just make a `posts` folder (or another name, but adjust the `collections` option), and put a file in there with the following formatting: `YEAR-MONTH-DAY-title.MARKUP`. So for example:
+To get started, just make a `posts` folder (or another name, but adjust the `collections` option), and put a file in there. So for example:
 
 ```
 .
 └── posts
-    ├── 2016-07-14-hello-world.sgr
-    └── 2016-07-16-second-post.sgr
+    ├── hello-world.sgr
+    └── second-post.sgr
 ```
 
 Within each file, you can use yaml front matter to designate metadata, as such:
@@ -89,7 +89,6 @@ html
   body
     h1 {{ title }}
     h3.author by {{ author }}
-    h3.date on {{ date }}
     .content(md)
       block(name='content')
 ```
