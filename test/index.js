@@ -3,6 +3,7 @@ const fs = require('fs')
 const webpack = require('webpack')
 const test = require('ava')
 const Spike = require('spike-core')
+const rimraf = require('rimraf')
 const Collections = require('..')
 const fixtures = path.join(__dirname, 'fixtures')
 const htmlStandards = require('reshape-standard')
@@ -38,7 +39,12 @@ test.cb('pagination', (t) => {
   const locals = {}
   const opts = {
     addDataTo: locals,
-    paginate: { template: 'posts/_template.html', perPage: 1 }
+    collections: {
+      posts: {
+        files: 'posts/**',
+        paginate: { template: 'posts/_template.html', perPage: 1 }
+      }
+    }
   }
 
   spikeCompile(t, root, locals, opts, () => {
@@ -48,19 +54,20 @@ test.cb('pagination', (t) => {
     const post1 = fs.readFileSync(path.join(publicPath, 'posts/foo.html'), 'utf8')
     const post2 = fs.readFileSync(path.join(publicPath, 'posts/bar.html'), 'utf8')
     t.is(post1.trim(), '<p>hello amaze!</p>')
-    t.is(post2.trim(), '<locals>snargle!</locals>\n<script>[{"dingle":"snargle","_path":"posts/bar.html"},{"wow":"amaze","_path":"posts/foo.html"}]</script>')
+    t.is(post2.trim(), '<locals>snargle!</locals>\n<script>{"posts":[{"dingle":"snargle","_path":"posts/bar.html"},{"wow":"amaze","_path":"posts/foo.html"}]}</script>')
 
     // pages 1 and 2 are present and contain the right locals
     const page1 = fs.readFileSync(path.join(publicPath, 'posts/p1.html'), 'utf8')
     const page2 = fs.readFileSync(path.join(publicPath, 'posts/p2.html'), 'utf8')
 
-    t.is(page1.trim(), '<pages>[{"page":1,"path":"posts/p1.html","posts":[{"dingle":"snargle","_path":"posts/bar.html"}]},{"page":2,"path":"posts/p2.html","posts":[{"wow":"amaze","_path":"posts/foo.html"}]}]</pages>\n<current>{"page":1,"path":"posts/p1.html","posts":[{"dingle":"snargle","_path":"posts/bar.html"}]}</current>')
-    t.is(page2.trim(), '<pages>[{"page":1,"path":"posts/p1.html","posts":[{"dingle":"snargle","_path":"posts/bar.html"}]},{"page":2,"path":"posts/p2.html","posts":[{"wow":"amaze","_path":"posts/foo.html"}]}]</pages>\n<current>{"page":2,"path":"posts/p2.html","posts":[{"wow":"amaze","_path":"posts/foo.html"}]}</current>')
+    t.is(page1.trim(), '<pages>{"posts":[{"page":1,"path":"posts/p1.html","posts":[{"dingle":"snargle","_path":"posts/bar.html"}]},{"page":2,"path":"posts/p2.html","posts":[{"wow":"amaze","_path":"posts/foo.html"}]}]}</pages>\n<current>{"page":1,"path":"posts/p1.html","posts":[{"dingle":"snargle","_path":"posts/bar.html"}]}</current>')
+    t.is(page2.trim(), '<pages>{"posts":[{"page":1,"path":"posts/p1.html","posts":[{"dingle":"snargle","_path":"posts/bar.html"}]},{"page":2,"path":"posts/p2.html","posts":[{"wow":"amaze","_path":"posts/foo.html"}]}]}</pages>\n<current>{"page":2,"path":"posts/p2.html","posts":[{"wow":"amaze","_path":"posts/foo.html"}]}</current>')
 
     // index is there and contains the right locals
     const index = fs.readFileSync(path.join(publicPath, 'index.html'), 'utf8')
-    t.is(index.trim(), '<all-posts>[{"dingle":"snargle","_path":"posts/bar.html"},{"wow":"amaze","_path":"posts/foo.html"}]</all-posts>')
+    t.is(index.trim(), '<all-posts>{"posts":[{"dingle":"snargle","_path":"posts/bar.html"},{"wow":"amaze","_path":"posts/foo.html"}]}</all-posts>')
 
+    rimraf.sync(publicPath)
     t.end()
   })
 })

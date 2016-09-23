@@ -41,7 +41,9 @@ This default configuration will look for a folder called `posts` and compile all
 ```js
 const collections = new Collections({
   addDataTo: locals,
-  collections: { posts: 'posts/**' }
+  collections: {
+    posts: { files: 'posts/**' }
+  }
 })
 ```
 
@@ -92,14 +94,14 @@ html
       block(name='content')
 ```
 
-All of your views will have get a `content` variable as well, which holds information on all of your collections. Each collection will be scoped as the name you gave it under `content`. So `{{ content.posts }}` would return the default posts folder. You can use this for building an index page as such:
+All of your views will have get a `_collections` variable as well, which holds information on all of your collections. Each collection will be scoped as the name you gave it under `_collections`. So `{{ _collections.posts }}` would return the default posts folder. You can use this for building an index page as such:
 
 ```jade
 extends(src='layout.sgr')
 block(name='content')
   h1 My Cool Blog
   ul
-    each(loop='post of content.posts')
+    each(loop='post of _collections.posts')
       li: a(href='{{ post._path }}') {{ post.title }}
 ```
 
@@ -158,11 +160,14 @@ Also note that you can pass a `perPage` option to the `pagination` object to def
 
 | Name | Description | Default |
 | ---- | ----------- | ------- |
-| **posts** | a [globstar](http://globtester.com) string relative to the project root matching any files to be processed as posts | `posts/**` |
-| **drafts** | a [globstar](http://globtester.com) string relative to the project root matching any files to be processed as drafts | `drafts/**` |
-| **addDataTo** | object that will have collections data appended to it | |
-| **permalinks** | a function that accepts the relative path to a given file and returns an object to be added to the front matter. | `YEAR-MONTH-DAY-title` |
-| **paginate** | object with `per_page` (an integer representing the number of posts per page), `template` (relative path to a template to render additional pages into), and `output` (a function that takes a page number and must output a relative destination path for the page) keys. If any single key is given, others default as such: | `{ per_page: 10, output: (n) => 'posts/pages/${n}.html' }` |
+| **addDataTo** | An object that will have collections' data appended to it | |
+| **collections** | An object with the keys being the name of your collection, and values as listed below | `{ posts: { files: `posts/** } }` |
+| **collections.[NAME].files** |  A [globstar](http://globtester.com) string relative to the project root matching any files to be processed as posts | |
+| **collections.[NAME].permalinks** | A function that accepts the relative path to a given file and returns an object to be added to the front matter. | `YEAR-MONTH-DAY-title` | |
+| **collections.[NAME].paginate** | Object with keys as described below | |
+| **collections.[NAME].paginate.perPage** | Integer representing the number of posts per page. | `10` |
+| **collections.[NAME].paginate.template | _(required if paginate is provided)_ Path (relative to the project root) to a template to render additional pages into. | |
+| **collections.[NAME].paginate.output | a function that takes a page number and must output a relative destination path for the page | `(x) => `[NAME]/p${x}.html` |
 
 ### What About Drafts?
 
