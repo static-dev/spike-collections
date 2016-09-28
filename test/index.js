@@ -59,7 +59,7 @@ test.cb('pagination', (t) => {
     const post1 = fs.readFileSync(path.join(publicPath, 'posts/foo.html'), 'utf8')
     const post2 = fs.readFileSync(path.join(publicPath, 'posts/bar.html'), 'utf8')
     t.is(post1.trim(), '<p>hello amaze!</p>')
-    t.is(post2.trim(), '<locals>snargle!</locals>\n<script>{"posts":[{"dingle":"snargle","permalink":"extra!","_path":"posts/bar.html"},{"wow":"amaze","permalink":"extra!","_path":"posts/foo.html"}]}</script>')
+    t.is(post2.trim(), '<locals>snargle!</locals>\n<permalink>extra!</permalink>\n<script>{"posts":[{"dingle":"snargle","permalink":"extra!","_path":"posts/bar.html"},{"wow":"amaze","permalink":"extra!","_path":"posts/foo.html"}]}</script>')
 
     // pages 1 and 2 are present and contain the right locals
     const page1 = fs.readFileSync(path.join(publicPath, 'posts/p1.html'), 'utf8')
