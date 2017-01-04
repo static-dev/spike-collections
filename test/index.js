@@ -77,6 +77,31 @@ test.cb('pagination', (t) => {
   })
 })
 
+test.cb('collection without pagination', (t) => {
+  const root = path.join(fixtures, 'no_pagination')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: { posts: { files: 'posts/**' } }
+  }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+
+    const index = fs.readFileSync(path.join(publicPath, 'index.html'), 'utf8')
+    t.is(index, '<all-posts>{"posts":[{"dingle":"snargle","_path":"posts/bar.html"},{"wow":"amaze","_path":"posts/foo.html"}]}</all-posts>\n')
+
+    const post1 = fs.readFileSync(path.join(publicPath, 'posts/bar.html'), 'utf8')
+    const post2 = fs.readFileSync(path.join(publicPath, 'posts/foo.html'), 'utf8')
+
+    t.is(post1, '<locals>snargle!</locals>\n<script>{"posts":[{"dingle":"snargle","_path":"posts/bar.html"},{"wow":"amaze","_path":"posts/foo.html"}]}</script>\n')
+    t.is(post2, '<p>hello amaze!</p>\n')
+
+    rimraf.sync(publicPath)
+    t.end()
+  })
+})
+
 // -------
 // Utility
 // -------
