@@ -42,7 +42,7 @@ test.cb('pagination', (t) => {
     collections: {
       posts: {
         files: 'posts/**',
-        permalink: (p) => { return { permalink: 'extra!' } },
+        transform: (p) => { return { permalink: 'extra!' } },
         paginate: {
           template: 'posts/_template.html',
           perPage: 1,

@@ -108,22 +108,86 @@ block(name='content')
 
 With this in place, you've got a basic blog structure going!
 
-#### Permalinks
+#### Special Variables
 
-Jekyll and some other blog systems require that you start posts with a date, which it then extracts and makes available through your post's locals. If you'd like to add functionality like this, it's simple to do with the `permalinks` option. It accepts a function which takes the post's filename as an input, and can export an object which is merged with that post's locals.
+Spike collections will add a few special variables to each post for developer convenience:
 
-So, for example, a permalink function to emulate jekyll's date-first format might look something like this:
+- `_path`: the full output path to the current post
+- `_collection`: the name of the collection of the current post
+
+#### Transform
+
+This is not a feature that jekyll includes as far as I know, but can be incredibly useful and powerful when used correctly. Adding a `transform` function allows you to make a transformation of your choice to the locals of each post in each of your collections. That is to say, before rendering the page, each page's locals are run through the function you provide to `transform`, and you are given the chance to modify them as you wish.
+
+This could be used to pick out specific posts or all posts from specific collections and make changes to their frontmatter, to add defaults across the board to all posts or specific collections, etc. The function can also be asynchronous and return a promise, although this could greatly slow down your compile time if you have many posts so be careful. For example, here's how to add a default variable (`reaction`, as `wow`) across all posts in a collection called `doges`:
 
 ```js
-function permalink (path) {
-  const matches = path.match(/^(\d+-\d+-\d+-)/)
-
-  if (!matches || !matches[1]) {
-    throw new Error(`incorrect date formatting for post: ${path}`)
+const collections = new Collections({
+  addDataTo: locals,
+  collections: {
+    doges: {
+      files: 'doges/**',
+      transform: (data) => {
+        console.log(data)
+        data.reaction = 'wow'
+        return data
+      }
+    }
   }
+})
+```
 
-  return { date: matches[1] }
-}
+In this case, every post in `doges` will have the same `reaction` without you having to repeat it in all the frontmatter. This is a very simple example, and there are much more powerful things you can do if you want, so feel free to experiment! Just return an object or promise for an object containing the frontmatter and you're set.
+
+#### Permalinks
+
+The permalinks function is specifically for modifying the output path of your posts, much like the equivalent function in jekyll, although spike-collections' version has a bit more power because it's a full function rather than a template string.
+
+The `permalinks` function will receive the file's path as the first argument, and the full frontmatter locals as an optional second argument, from these two you can build your ideal output url and return it. By default, the output url will be the same as the url specified in the source.
+
+An example of an implementation of jekyll's default `date` output format:
+
+```js
+const collections = new Collections({
+  addDataTo: locals,
+  collections: {
+    posts: {
+      files: 'posts/**',
+      permalink: (p) => {
+        // matches: [1] collection, [2] year, [3] month, [4] day, [5] title
+        const m = p.match(/^([A-Za-z-_])+\/(\d+)-(\d+)-(\d+)-([A-Za-z-_]+)\./)
+        if (!m || !m[1] || !m[2] || !m[3] || !m[4]) {
+          throw new Error(`incorrect title formatting for post: ${path}`)
+        }
+        return `${m[0]}/${m[1]}/${m[2]}/${m[3]}/${m[4]}.html`
+      }
+    }
+  }
+})
+```
+
+Note that slashes in the output are translated to folders as expected.
+
+While this may look verbose, it is left up to the developer to add more flexibility to path parsing if desired. This means it's not required that the date come first, or even that hyphens are used to separate pieces. That being said, functions that exactly match jekyll's default formats can be accessed by pulling them off the `collections` class as such:
+
+```js
+console.log(collections.jekyll)
+// => `date`, `pretty`, `ordinal`, and `none` functions
+// => also can use `regex` to run their default parse
+```
+
+So a much shorter way to implement the previous example would be:
+
+```js
+const collections = new Collections({
+  addDataTo: locals,
+  collections: {
+    posts: {
+      files: 'posts/**',
+      permalink: collections.jekyll.date
+    }
+  }
+})
 ```
 
 #### Pagination
