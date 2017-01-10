@@ -15,7 +15,7 @@
     "rimraf": "^2.5.4",
     "snazzy": "^5.0.0",
     "source-loader": "^0.2.0",
-    "spike-core": "^0.13.0",
+    "spike-core": "^0.13.1",
     "standard": "^8.1.0",
     "webpack": "^1.13.2"
   },
@@ -41,7 +41,7 @@
     "objectfn": "^2.0.0",
     "reshape": "^0.3.2",
     "reshape-loader": "^0.3.0",
-    "spike-util": "^0.3.0",
+    "spike-util": "^0.4.0",
     "when": "^3.7.7"
   }
 }

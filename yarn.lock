@@ -1063,13 +1063,13 @@ browser-sync-webpack-plugin@^1.1.2:
   dependencies:
     lodash "4.x.x"
 
-browser-sync@^2.17.6:
-  version "2.18.5"
-  resolved "https://registry.yarnpkg.com/browser-sync/-/browser-sync-2.18.5.tgz#c04b10037289df5157a363d42100069d77e744e9"
+browser-sync@^2.18.6:
+  version "2.18.6"
+  resolved "https://registry.yarnpkg.com/browser-sync/-/browser-sync-2.18.6.tgz#7b303ea8905eaa20629e6c5d3e820c32ad96bb24"
   dependencies:
     browser-sync-client "2.4.4"
     browser-sync-ui "0.6.2"
-    bs-recipes "1.3.2"
+    bs-recipes "1.3.4"
     chokidar "1.6.1"
     connect "3.5.0"
     dev-ip "^1.0.1"
@@ -1112,9 +1112,9 @@ browserslist@~1.5.1:
   dependencies:
     caniuse-db "^1.0.30000601"
 
-bs-recipes@1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/bs-recipes/-/bs-recipes-1.3.2.tgz#aebff3bfc9dca4cab3c2938d91e43473cf41b6c1"
+bs-recipes@1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/bs-recipes/-/bs-recipes-1.3.4.tgz#0d2d4d48a718c8c044769fdc4f89592dc8b69585"
 
 buble@^0.12.0:
   version "0.12.5"
@@ -4881,13 +4881,13 @@ spdx-license-ids@^1.0.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-1.2.2.tgz#c9df7a3424594ade6bd11900d596696dc06bac57"
 
-spike-core@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/spike-core/-/spike-core-0.13.0.tgz#34321ce8cf4ff7e91ec4bbce403f6a42a507109e"
+spike-core@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/spike-core/-/spike-core-0.13.1.tgz#2c6f8a31cf553e933f90c6364101dbffcaa2cd5c"
   dependencies:
     babel-core "^6.18.2"
     babel-loader "^6.2.7"
-    browser-sync "^2.17.6"
+    browser-sync "^2.18.6"
     browser-sync-webpack-plugin "^1.1.2"
     filewrap "^0.1.0"
     glob "^7.0.5"
@@ -4910,6 +4910,15 @@ spike-core@^0.13.0:
 spike-util@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/spike-util/-/spike-util-0.3.0.tgz#0aa207bb95a400e6f7821ce60290fc2316ccdd7d"
+  dependencies:
+    filewrap "0.1.0"
+    glob "^7.0.4"
+    micromatch "^2.3.8"
+    when "^3.7.7"
+
+spike-util@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/spike-util/-/spike-util-0.4.0.tgz#b2797a0c261db119c86de80cc073ca7c6f6eefb9"
   dependencies:
     filewrap "0.1.0"
     glob "^7.0.4"

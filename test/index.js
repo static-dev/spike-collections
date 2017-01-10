@@ -102,6 +102,32 @@ test.cb('collection without pagination', (t) => {
   })
 })
 
+test.cb('permalinks', (t) => {
+  const root = path.join(fixtures, 'permalinks')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: {
+      posts: {
+        files: 'posts/**',
+        permalinks: (p) => {
+          return p.replace(/posts\//, 'posts/nested/')
+        }
+      }
+    }
+  }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+
+    fs.accessSync(path.join(publicPath, 'posts/nested/foo.html'))
+    fs.accessSync(path.join(publicPath, 'posts/nested/bar.html'))
+
+    rimraf.sync(publicPath)
+    t.end()
+  })
+})
+
 // -------
 // Utility
 // -------
