@@ -128,6 +128,78 @@ test.cb('permalinks', (t) => {
   })
 })
 
+test.cb('Jekyll date format', (t) => {
+  const root = path.join(fixtures, 'jekyll_date')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: {
+      posts: { files: 'posts/**', permalinks: Collections.jekyll.date }
+    }
+  }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+    fs.accessSync(path.join(publicPath, 'posts/2017/01/12/testing.html'))
+    rimraf.sync(publicPath)
+    t.end()
+  })
+})
+
+test.cb('Jekyll ordinal format', (t) => {
+  const root = path.join(fixtures, 'jekyll_ordinal')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: {
+      posts: { files: 'posts/**', permalinks: Collections.jekyll.ordinal }
+    }
+  }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+    fs.accessSync(path.join(publicPath, 'posts/2017/181/testing.html'))
+    rimraf.sync(publicPath)
+    t.end()
+  })
+})
+
+test.cb('Jekyll none format', (t) => {
+  const root = path.join(fixtures, 'jekyll_none')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: {
+      posts: { files: 'posts/**', permalinks: Collections.jekyll.none }
+    }
+  }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+    fs.accessSync(path.join(publicPath, 'posts/testing.html'))
+    rimraf.sync(publicPath)
+    t.end()
+  })
+})
+
+test.cb('Jekyll format error', (t) => {
+  const root = path.join(fixtures, 'jekyll_format_error')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: {
+      posts: { files: 'posts/**', permalinks: Collections.jekyll.date }
+    }
+  }
+
+  spikeCompile({
+    end: (err) => {
+      t.truthy(err.toString().match(/1-12-testing\.html/))
+      t.end()
+    }
+  }, root, locals, opts, () => {})
+})
+
 // -------
 // Utility
 // -------

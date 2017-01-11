@@ -38,6 +38,7 @@
     "glob": "^7.1.0",
     "joi": "^10.1.0",
     "js-yaml": "^3.6.1",
+    "lodash.bindall": "^4.4.0",
     "objectfn": "^2.0.0",
     "reshape": "^0.3.2",
     "reshape-loader": "^0.3.0",

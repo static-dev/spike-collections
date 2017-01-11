@@ -168,12 +168,12 @@ const collections = new Collections({
 
 Note that slashes in the output are translated to folders as expected.
 
-While this may look verbose, it is left up to the developer to add more flexibility to path parsing if desired. This means it's not required that the date come first, or even that hyphens are used to separate pieces. That being said, functions that exactly match jekyll's default formats can be accessed by pulling them off the `collections` class as such:
+While this may look verbose, it is left up to the developer to add more flexibility to path parsing if desired. This means it's not required that the date come first, or even that hyphens are used to separate pieces. That being said, functions that exactly match jekyll's default formats (minus `pretty`, which is easily implemented through netlify or nginx) can be accessed by pulling them off the `Collections` class as such:
 
 ```js
-console.log(collections.jekyll)
-// => `date`, `pretty`, `ordinal`, and `none` functions
-// => also can use `regex` to run their default parse
+console.log(Collections.jekyll)
+// => `date`, `ordinal`, and `none` functions can be used
+// => also can use `regex` to get our jekyll format parser
 ```
 
 So a much shorter way to implement the previous example would be:
@@ -184,7 +184,7 @@ const collections = new Collections({
   collections: {
     posts: {
       files: 'posts/**',
-      permalink: collections.jekyll.date
+      permalink: Collections.jekyll.date
     }
   }
 })
