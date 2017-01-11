@@ -8,14 +8,14 @@
   },
   "bugs": "https://github.com/static-dev/spike-collections/issues",
   "devDependencies": {
-    "ava": "^0.16.0",
+    "ava": "^0.17.0",
     "coveralls": "^2.11.14",
-    "nyc": "^8.1.0",
+    "nyc": "^10.0.0",
     "reshape-standard": "^0.4.0",
     "rimraf": "^2.5.4",
     "snazzy": "^5.0.0",
     "source-loader": "^0.2.0",
-    "spike-core": "^0.12.1",
+    "spike-core": "^0.13.1",
     "standard": "^8.1.0",
     "webpack": "^1.13.2"
   },
@@ -33,14 +33,16 @@
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
+    "es6bindall": "^0.0.9",
     "filewrap": "^0.1.0",
     "glob": "^7.1.0",
-    "joi": "^9.0.4",
+    "joi": "^10.1.0",
     "js-yaml": "^3.6.1",
+    "lodash.bindall": "^4.4.0",
     "objectfn": "^2.0.0",
     "reshape": "^0.3.2",
-    "reshape-loader": "^0.2.3",
-    "spike-util": "^0.3.0",
+    "reshape-loader": "^0.3.0",
+    "spike-util": "^0.4.0",
     "when": "^3.7.7"
   }
 }
