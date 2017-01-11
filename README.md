@@ -245,7 +245,8 @@ More information on pagination options can be found below.
 | **addDataTo** | An object that will have collections' data appended to it | |
 | **collections** | An object with the keys being the name of your collection, and values as listed below | `{ posts: { files: posts/** } }` |
 | **collections.[name].files** |  A [globstar](http://globtester.com) string relative to the project root matching any files to be processed as posts | |
-| **collections.[name].permalinks** | A function that accepts the relative path to a given file and returns an object to be added to the front matter. | |
+| **collections.[name].permalinks** | A function that accepts the relative path to a given file and returns a desired output path. | |
+| **collections.[name].transform** | A function that accepts the full locals for each post and returns a modified locals object. | |
 | **collections.[name].paginate** | Object with keys as described below | |
 | **collections.[name].paginate.perPage** | Integer representing the number of posts per page. | `10` |
 | **collections.[name].paginate.template** | _(required if paginate is provided)_ Path (relative to the project root) to a template to render additional pages into. | |
