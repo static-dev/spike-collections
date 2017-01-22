@@ -1,5 +1,7 @@
 # Spike Collections
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/static-dev/spike-collections.svg)](https://greenkeeper.io/)
+
 [![npm](https://img.shields.io/npm/v/spike-collections.svg?style=flat-square)](https://npmjs.com/package/spike-collections)
 [![tests](https://img.shields.io/travis/static-dev/spike-collections.svg?style=flat-square)](https://travis-ci.org/static-dev/spike-collections?branch=master)
 [![dependencies](https://img.shields.io/david/static-dev/spike-collections.svg?style=flat-square)](https://david-dm.org/static-dev/spike-collections)
