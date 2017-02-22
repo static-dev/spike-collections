@@ -215,13 +215,12 @@ function spikeCompile (t, root, locals, options, cb) {
   const proj = new Spike({
     root,
     ignore: ['**/_*'],
-    reshape: (ctx) => {
-      return htmlStandards({
-        parser: false,
-        webpack: ctx,
-        locals: collections.locals(ctx, locals)
-      })
-    },
+    reshape: htmlStandards({
+      parser: false,
+      locals: (ctx) => {
+        return collections.locals(ctx, locals)
+      }
+    }),
     plugins: [collections]
   })
 
