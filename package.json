@@ -9,15 +9,15 @@
   "bugs": "https://github.com/static-dev/spike-collections/issues",
   "devDependencies": {
     "ava": "^0.18.0",
-    "coveralls": "^2.11.14",
+    "coveralls": "^2.11.16",
     "nyc": "^10.1.2",
-    "reshape-standard": "^0.5.0",
-    "rimraf": "^2.5.4",
+    "reshape-standard": "next",
+    "rimraf": "^2.6.0",
     "snazzy": "^6.0.0",
     "source-loader": "^0.2.0",
-    "spike-core": "^0.13.3",
+    "spike-core": "next",
     "standard": "^8.1.0",
-    "webpack": "^1.13.2"
+    "webpack": "^2.2.1"
   },
   "engines": {
     "node": ">= 6"
@@ -36,13 +36,13 @@
     "es6bindall": "^0.0.9",
     "filewrap": "^0.1.0",
     "glob": "^7.1.0",
-    "joi": "^10.2.0",
-    "js-yaml": "^3.6.1",
+    "joi": "^10.2.2",
+    "js-yaml": "^3.8.1",
     "lodash.bindall": "^4.4.0",
     "objectfn": "^2.0.0",
     "reshape": "^0.4.1",
-    "reshape-loader": "^0.4.2",
-    "spike-util": "^0.4.0",
-    "when": "^3.7.7"
+    "reshape-loader": "next",
+    "spike-util": "next",
+    "when": "^3.7.8"
   }
 }
