@@ -16,7 +16,7 @@
     "snazzy": "^6.0.0",
     "source-loader": "^0.2.0",
     "spike-core": "^0.13.3",
-    "standard": "^9.0.2",
+    "standard": "^10.0.0",
     "webpack": "^1.13.2"
   },
   "engines": {
