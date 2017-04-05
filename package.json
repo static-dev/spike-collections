@@ -41,7 +41,7 @@
     "lodash.bindall": "^4.4.0",
     "objectfn": "^2.0.0",
     "reshape": "^0.4.1",
-    "reshape-loader": "^0.4.2",
+    "reshape-loader": "^1.0.0",
     "spike-util": "^0.4.0",
     "when": "^3.7.7"
   }
