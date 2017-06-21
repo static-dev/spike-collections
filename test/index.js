@@ -206,6 +206,19 @@ test.cb('Jekyll format error', (t) => {
   }, root, locals, opts, () => {})
 })
 
+test.cb("doesn't error with empty collections", (t) => {
+  const root = path.join(fixtures, 'no_files_error')
+  const locals = {}
+  const opts = { addDataTo: locals }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+    t.throws(() => fs.accessSync(path.join(publicPath, 'posts')))
+    rimraf.sync(publicPath)
+    t.end()
+  })
+})
+
 // -------
 // Utility
 // -------
