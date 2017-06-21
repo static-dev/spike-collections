@@ -30,6 +30,7 @@ test.cb('frontmatter loader', (t) => {
     const mod = comp.modules.find((m) => m.rawRequest === './index.html')
     t.truthy(comp.options.__frontmatter['index.html'].foo === 'bar')
     t.is(String(mod._src).trim(), 'hello there!')
+    fs.unlinkSync(path.join(root, 'build.js'))
     t.end()
   })
 })
