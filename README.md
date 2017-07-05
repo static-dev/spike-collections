@@ -22,16 +22,17 @@ Install with: `npm install spike-collections -S`
 Add to your spike project as such:
 
 ```js
+const Collections = require('spike-collections')
+const htmlStandards = require('reshape-standard')
+
 const locals = {}
-const collections = new Collections({
-  addDataTo: locals
-})
+const collections = new Collections({ addDataTo: locals })
 
 module.exports = {
   // your config here...
-  reshape: (ctx) => {
-    return htmlStandards({ webpack: ctx, locals: collections.locals(ctx, locals) })
-  },
+  reshape: htmlStandards({
+    locals: (ctx) => collections.locals(ctx, locals)
+  }),
   plugins: [collections]
 }
 ```
