@@ -239,6 +239,39 @@ new Collections({
 
 More information on pagination options can be found below.
 
+### Using Raw Markdown Files
+
+We strongly recommend using reshape templates with a markdown block when trying to write markdown due to the higher flexibility of using full html templates. However, there are some applications such as porting from other systems that require the use of raw markdown files without html layouts at all, and some people just still prefer this method. Spike Collections can handle this case if it is needed using the `markdownLayouts` option. For example:
+
+```js
+new Collections({
+  addDataTo: locals,
+  collections: {
+    posts: {
+      files: 'posts/**',
+      markdownLayout: 'layouts/post.html'
+    }
+  }
+})
+```
+
+The `markdownLayout` option is an accepts a glob-compatible path, resolved relative to the project root, pointing to a reshape layout. All frontmatter locals will be available within the layout, and the contents of the markdown file will be available via an automatically injected `_content` local, rendered as html. An example of how a layout might look:
+
+```
+<doctype html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    {{{ _content }}}
+  </body>
+</html>
+```
+
+Note that if the `markdownLayouts` option is present, any file with a `.md` or `.markdown` extension in your collection folder will be rendered into the layout. Any other file will be rendered as usual.
+
 ### Options
 
 | Name | Description | Default |
