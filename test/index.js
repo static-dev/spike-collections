@@ -170,6 +170,42 @@ test.cb('permalinks', t => {
   })
 })
 
+test.only.cb('markdownLayouts option', t => {
+  const root = path.join(fixtures, 'markdown_layouts')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: {
+      posts: {
+        files: 'posts/**',
+        markdownLayout: '_post_layout.html'
+      }
+    }
+  }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+    const p1 = fs.readFileSync(path.join(publicPath, 'posts/test.html'), 'utf8')
+    t.is(
+      p1.trim(),
+      `<!DOCTYPE html>
+<html>
+  <head>
+    <title>wow</title>
+  </head>
+  <body>
+    <h1>wow</h1>
+    <div>
+      <p>Here’s some <strong>markdown</strong>, so great!</p>
+    </div>
+  </body>
+</html>`
+    )
+    rimraf.sync(publicPath)
+    t.end()
+  })
+})
+
 test.cb('Jekyll date format', t => {
   const root = path.join(fixtures, 'jekyll_date')
   const locals = {}
@@ -278,6 +314,7 @@ function spikeCompile(t, root, locals, options, cb) {
 
   const proj = new Spike({
     root,
+    // matchers: { html: '**/*.(html|md)' },
     ignore: ['**/_*'],
     reshape: htmlStandards({
       locals: ctx => {
