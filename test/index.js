@@ -50,7 +50,7 @@ test.cb('pagination', t => {
           return Object.assign(l, { permalink: 'extra!' })
         },
         paginate: {
-          template: 'posts/_template.html',
+          template: 'pagination_template.html',
           perPage: 1,
           output: i => `posts/p${i}.html`
         }
@@ -272,6 +272,9 @@ test.cb("doesn't error with empty collections", t => {
 
 function spikeCompile(t, root, locals, options, cb) {
   const collections = new Collections(options)
+  // double compiles are the issue here
+  // this is not a super pressing change, maybe come back to it later
+  // need a plugin which adds a markdown loader which ignores front matter and accepts layouts
 
   const proj = new Spike({
     root,
