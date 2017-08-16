@@ -170,7 +170,7 @@ test.cb('permalinks', t => {
   })
 })
 
-test.only.cb('markdownLayouts option', t => {
+test.cb('markdownLayouts option', t => {
   const root = path.join(fixtures, 'markdown_layouts')
   const locals = {}
   const opts = {
