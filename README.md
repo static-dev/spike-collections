@@ -11,7 +11,7 @@ Some jekyll-esque features for spike
 
 ### Why should you care?
 
-Hi there! Coming from jekyll to check this out? You've found your happy place. This plugin adds more or less all the essential features from jekyll to spike, giving you the capability to use front matter, date format posts, and paginate. If you are working on a small blog, this is a great plugin for you. And if you're working on a large blog, it's still great because you can use hard-source cacheing to produce incremental builds and still have lightning fast compile times.
+Hi there! Coming from jekyll to check this out? You've found your happy place. This plugin adds more or less all the essential features from jekyll to spike, giving you the capability to use front matter, date format posts, and paginate. If you are working on a small blog, this is a great plugin for you. And if you're working on a large blog, you should use a real database to store your posts, rather than a github repo 😁
 
 ### Installation
 
@@ -36,8 +36,6 @@ module.exports = {
   plugins: [collections]
 }
 ```
-
-> **NOTE:** Because of [an unfortunate webpack issue](https://github.com/webpack/webpack/issues/2515), you cannot use the globally installed spike CLI with this plugin. Instead, you must install spike locally (`npm i spike -S`), then execute that version. Typically adding an npm script that runs `spike watch` is the best approach.
 
 This default configuration will look for a folder called `posts` and compile all the content into that folder in the same way that jekyll does. You can also customize your collections. For example, the default config really resolves to this:
 
@@ -239,6 +237,39 @@ new Collections({
 
 More information on pagination options can be found below.
 
+### Using Raw Markdown Files
+
+We strongly recommend using reshape templates with a markdown block when trying to write markdown due to the higher flexibility of using full html templates. However, there are some applications such as porting from other systems that require the use of raw markdown files without html layouts at all, and some people just still prefer this method. Spike Collections can handle this case if it is needed using the `markdownLayout` option. For example:
+
+```js
+new Collections({
+  addDataTo: locals,
+  collections: {
+    posts: {
+      files: 'posts/**',
+      markdownLayout: 'layouts/post.html'
+    }
+  }
+})
+```
+
+The `markdownLayout` option is an accepts a glob-compatible path, resolved relative to the project root, pointing to a reshape layout. All front matter locals will be available within the layout, and the contents of the markdown file will be available via an automatically injected `_content` local, rendered as html. An example of how a layout might look:
+
+```
+<doctype html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    {{{ _content }}}
+  </body>
+</html>
+```
+
+Note that if the `markdownLayout` option is present, any file with a `.md` or `.markdown` extension in your collection folder will be rendered into the layout. Any other file will be rendered as usual.
+
 ### Options
 
 | Name | Description | Default |
@@ -248,6 +279,7 @@ More information on pagination options can be found below.
 | **collections.[name].files** |  A [globstar](http://globtester.com) string relative to the project root matching any files to be processed as posts | |
 | **collections.[name].permalinks** | A function that accepts the relative path to a given file and returns a desired output path. | |
 | **collections.[name].transform** | A function that accepts the full locals for each post and returns a modified locals object. | |
+| **collections.[name].markdownLayout** | Path relative to the project layout specifying a layout file to render any raw markdown files into | |
 | **collections.[name].paginate** | Object with keys as described below | |
 | **collections.[name].paginate.perPage** | Integer representing the number of posts per page. | `10` |
 | **collections.[name].paginate.template** | _(required if paginate is provided)_ Path (relative to the project root) to a template to render additional pages into. | |
