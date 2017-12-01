@@ -7,6 +7,8 @@ const rimraf = require('rimraf')
 const Collections = require('..')
 const fixtures = path.join(__dirname, 'fixtures')
 const htmlStandards = require('reshape-standard')
+const MarkdownIt = require('markdown-it')
+const md = new MarkdownIt()
 
 test.cb('frontmatter loader', t => {
   const root = path.join(fixtures, 'frontmatter-loader')
@@ -204,6 +206,34 @@ test.cb('markdownLayouts option', t => {
     rimraf.sync(publicPath)
     t.end()
   })
+})
+
+test.cb('_content in collections of markdown extension', t => {
+  const root = path.join(fixtures, 'markdown_layouts_only_contains_content')
+  const locals = {}
+  const opts = {
+    addDataTo: locals,
+    collections: {
+      posts: {
+        files: 'posts/**',
+        markdownLayout: '_post_layout.html'
+      }
+    }
+  }
+
+  spikeCompile(t, root, locals, opts, () => {
+    const publicPath = path.join(root, 'public')
+    const index = fs.readFileSync(path.join(publicPath, 'index.html'), 'utf8')
+
+    t.is(
+      index,
+      '<all-posts>{"posts":[{"title":"Me me","_path":"posts/another.html","_collection":"posts"},{"title":"wow","_path":"posts/test.html","_collection":"posts","_content":"<p>Here’s some <strong>markdown</strong>, so great!</p>\\n"}]}</all-posts>\n'
+    )
+
+    rimraf.sync(publicPath)
+    t.end()
+  })
+
 })
 
 test.cb('Jekyll date format', t => {
