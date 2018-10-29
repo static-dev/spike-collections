@@ -3136,9 +3136,9 @@ joi@^10.0.0, joi@^10.2.0, joi@^10.6.0:
     items "2.x.x"
     topo "2.x.x"
 
-joi@^13.0.2:
-  version "13.0.2"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-13.0.2.tgz#8cc57a573b7c0b64108fa6fd85061c20fcb0d6b0"
+joi@^14.0.2:
+  version "14.0.2"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-14.0.2.tgz#b8116fa85d35bf0be5ab885a5afb0201882d7e43"
   dependencies:
     hoek "5.x.x"
     isemail "3.x.x"
